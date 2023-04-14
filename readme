@@ -1,0 +1,11 @@
+test
+docker run --rm --log-driver syslog --log-opt syslog-address=udp://localhost:514 alpine echo hello world2
+
+start
+docker run -d --name rsyslog-alpine -p 514:514/udp -p 514:514/tcp rsyslog-alpine
+
+
+docker run -d -p 80:80 --log-driver syslog --log-opt syslog-address=tcp://172.0.0.1:514 nginx
+
+real
+docker run -d -p 80:80 --log-driver syslog --log-opt syslog-address=udp://host.docker.internal:514 nginx
