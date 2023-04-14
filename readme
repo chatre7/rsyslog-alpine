@@ -1,11 +1,15 @@
-test
-docker run --rm --log-driver syslog --log-opt syslog-address=udp://localhost:514 alpine echo hello world2
+1. build docker image this command
+docker build -t rsyslog-alpine .
 
-start
+1.2 run docker image after build this command
 docker run -d --name rsyslog-alpine -p 514:514/udp -p 514:514/tcp rsyslog-alpine
 
+1.2 test send log to rsyslog server
+docker run --rm --log-driver syslog --log-opt syslog-address=udp://localhost:514 alpine echo hello world udp
+docker run --rm --log-driver syslog --log-opt syslog-address=tcp://localhost:514 alpine echo hello world tcp
 
+1.3 test send nginx log with tcp
 docker run -d -p 80:80 --log-driver syslog --log-opt syslog-address=tcp://172.0.0.1:514 nginx
 
-real
+1.4 test send nginx log with udp real
 docker run -d -p 80:80 --log-driver syslog --log-opt syslog-address=udp://host.docker.internal:514 nginx
